@@ -8,7 +8,7 @@ const { connectDB } = require('./database');
 app.set('port', process.env.PORT || 3000);
 app.use(morgan('dev'));
 app.use(express.json()); // método que ayuda a convertir el código para que el servidor pueda entender lo que viene del cliente.
-app.use(cors({ origin: ['http://localhost:4200', 'http://127.0.0.1:4200'] }));
+app.use(cors());
 
 // rutas de nuestro servidor
 app.use('/api/empleados',require('./routes/empleado.routes'));
@@ -24,3 +24,5 @@ connectDB()
         console.error('No se pudo conectar a MongoDB:', error.message);
         process.exit(1);
     });
+
+    module.exports = app;
