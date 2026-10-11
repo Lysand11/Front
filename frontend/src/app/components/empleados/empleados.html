@@ -1,0 +1,89 @@
+<main class="container">
+   <header class="section">
+      <h1>Gestión de empleados</h1>
+      <p>Registra y administra los datos del personal.</p>
+   </header>
+
+   <div class="row">
+      <section class="col s12 m5" aria-label="Formulario de empleado">
+         <div class="card">
+            <div class="card-content">
+               <span class="card-title">{{ editando ? 'Editar empleado' : 'Nuevo empleado' }}</span>
+               <form #empleadoForm="ngForm" (ngSubmit)="guardarEmpleado()">
+                  <div class="row">
+                     <div class="input-field col s12">
+                        <input id="name" type="text" name="name" [(ngModel)]="empleado.name" required>
+                        <label for="name" [class.active]="empleado.name">Nombre</label>
+                     </div>
+                     <div class="input-field col s12">
+                        <input id="position" type="text" name="position" [(ngModel)]="empleado.position" required>
+                        <label for="position" [class.active]="empleado.position">Cargo</label>
+                     </div>
+                     <div class="input-field col s12">
+                        <input id="office" type="text" name="office" [(ngModel)]="empleado.office" required>
+                        <label for="office" [class.active]="empleado.office">Lugar de trabajo</label>
+                     </div>
+                     <div class="input-field col s12">
+                        <input id="salary" type="number" name="salary" [(ngModel)]="empleado.salary" min="0" placeholder="Escribe el salario" required>
+                        <label for="salary" class="active">Salario</label>
+                     </div>
+                     <div class="col s12">
+                        <button class="btn waves-effect waves-light" type="submit" [disabled]="guardando || empleadoForm.invalid">
+                           {{ guardando ? 'Guardando...' : (editando ? 'Guardar cambios' : 'Guardar empleado') }}
+                        </button>
+                        <button class="btn-flat" type="button" (click)="cancelarEdicion(); empleadoForm.resetForm()">
+                           Limpiar
+                        </button>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+
+         @if (error) {
+            <p class="red-text" role="alert">{{ error }}</p>
+         }
+      </section>
+
+      <section class="col s12 m7" aria-label="Lista de empleados">
+         <div class="card">
+            <div class="card-content">
+               <span class="card-title">Empleados registrados</span>
+               @if (cargando) {
+                  <p role="status">Cargando empleados...</p>
+               } @else if (empleados.length === 0) {
+                  <p>No hay empleados registrados.</p>
+               } @else {
+                  <div class="responsive-table">
+                     <table class="highlight">
+                        <thead>
+                           <tr>
+                              <th>Nombre</th>
+                              <th>Cargo</th>
+                              <th>Oficina</th>
+                              <th>Salario</th>
+                              <th>Acciones</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           @for (item of empleados; track item._id) {
+                              <tr>
+                                 <td>{{ item.name }}</td>
+                                 <td>{{ item.position }}</td>
+                                 <td>{{ item.office }}</td>
+                                 <td>{{ item.salary }}</td>
+                                 <td>
+                                    <button class="btn-small" type="button" (click)="editarEmpleado(item)">Editar</button>
+                                    <button class="btn-small red darken-1" type="button" (click)="eliminarEmpleado(item._id)">Eliminar</button>
+                                 </td>
+                              </tr>
+                           }
+                        </tbody>
+                     </table>
+                  </div>
+               }
+            </div>
+         </div>
+      </section>
+   </div>
+</main>
