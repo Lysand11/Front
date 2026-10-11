@@ -10,6 +10,8 @@ export class EmpleadoService {
    selectedEmpleado: Empleado;
    empleados: Empleado[];
    readonly URL_API = 'https://vercel.app';
+
+
    constructor(private http: HttpClient) {
      this.selectedEmpleado = new Empleado();
      this.empleados = [];
